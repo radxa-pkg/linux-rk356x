@@ -5,6 +5,9 @@ on:
     paths:
       - 'VERSION'
 
+permissions:
+  contents: write
+
 jobs:
   prepare_release:
     runs-on: ubuntu-latest
@@ -49,3 +52,8 @@ jobs:
           revision: ${{ env.revision }}
           release-id: ${{ needs.prepare_release.outputs.release_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update Test repos
+        uses: radxa-repo/update-repo-action@main
+        with:
+          test-repo: true
+          token: ${{ secrets.RADXA_APT_TEST_REPO_TOKEN }}
